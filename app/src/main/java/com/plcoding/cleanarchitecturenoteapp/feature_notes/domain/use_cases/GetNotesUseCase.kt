@@ -11,6 +11,7 @@ class GetNotesUseCase(
     private val repository: NoteRepository,
 ) {
 
+    private val favoriteList : MutableList<Note> = mutableListOf()
     operator fun invoke(
         noteOrder: NoteOrder = NoteOrder.Date(OrderType.Descending)
     ): Flow<List<Note>> {
@@ -22,7 +23,10 @@ class GetNotesUseCase(
                         is NoteOrder.Title-> notes.sortedBy { it.title.lowercase() }
                         is NoteOrder.Date-> notes.sortedBy { it.timestamp }
                         is NoteOrder.Color -> notes.sortedBy { it.color }
-                        is NoteOrder.Favorite -> notes.sortedBy { it.isFavorite}
+                        is NoteOrder.Favorite ->{
+                            notes.filter { it.isFavorite }.sortedBy { it.timestamp } +
+                                    notes.filter { !it.isFavorite }.sortedBy { it.timestamp }
+                        }
                     }
                 }
                 is OrderType.Descending ->{
@@ -30,7 +34,10 @@ class GetNotesUseCase(
                         is NoteOrder.Title-> notes.sortedByDescending { it.title.lowercase() }
                         is NoteOrder.Date-> notes.sortedByDescending{ it.timestamp }
                         is NoteOrder.Color -> notes.sortedByDescending { it.color }
-                        is NoteOrder.Favorite -> notes.sortedByDescending { it.isFavorite}
+                        is NoteOrder.Favorite -> {
+                            notes.filter { it.isFavorite }.sortedByDescending{ it.timestamp } +
+                                    notes.filter { !it.isFavorite }.sortedByDescending{ it.timestamp }
+                        }
                     }
                 }
             }
