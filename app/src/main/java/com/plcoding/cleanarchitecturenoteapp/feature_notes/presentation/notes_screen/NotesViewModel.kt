@@ -8,6 +8,7 @@ import com.plcoding.cleanarchitecturenoteapp.feature_notes.domain.model.Note
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.domain.use_cases.NoteUseCasesWrapper
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.domain.util.NoteOrder
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.domain.util.OrderType
+import com.plcoding.cleanarchitecturenoteapp.feature_notes.presentation.add_edit_note_screen.TextNoteFieldState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
@@ -22,8 +23,14 @@ class NotesViewModel @Inject constructor(
 
     private val _state = mutableStateOf(NoteState())
     val state : State<NoteState> = _state
-    
 
+
+    private val _searchState = mutableStateOf<TextNoteFieldState>(
+        TextNoteFieldState(
+            hint = "Buscar nota..."
+        )
+    )
+    val searchState : State<TextNoteFieldState> = _searchState
 
     private var recentlyDeletedNote : Note? = null
 
@@ -41,6 +48,20 @@ class NotesViewModel @Inject constructor(
                     return
                 }
                 getNotes(events.order)
+            }
+            is NoteEvents.EnteredSearch->{
+                _searchState.value = searchState.value.copy(
+                    text = events.value
+                )
+            }
+            is NoteEvents.ChangeFocusSearch->{
+                _searchState.value = searchState.value.copy(
+                    isHintVisible = !events.focusState.isFocused &&
+                            searchState.value.text.isBlank()
+                )
+            }
+            is NoteEvents.Search->{
+                searchInNotes(searchState.value.text, _state.value.noteList)
             }
             is NoteEvents.DeleteNote -> {
                 viewModelScope.launch {
@@ -63,7 +84,7 @@ class NotesViewModel @Inject constructor(
         }
     }
 
-    private fun getNotes(noteOrder : NoteOrder) {
+    private fun getNotes(noteOrder : NoteOrder){
         getNotesJob?.cancel()
         getNotesJob = noteUseCasesWrapper.getNotesUseCase(noteOrder)
             .onEach { notes ->
@@ -73,6 +94,16 @@ class NotesViewModel @Inject constructor(
                 )
             }.launchIn(viewModelScope)
 
+    }
+    private fun searchInNotes(string: String, noteList :List<Note>){
+        getNotesJob?.cancel()
+        getNotesJob = noteUseCasesWrapper.searchUseCase(string, noteList)
+            .onEach { notes ->
+                _state.value = state.value.copy(
+                    noteList = notes,
+                    order = NoteOrder.Date(OrderType.Descending),
+                )
+            }.launchIn(viewModelScope)
 
     }
 }

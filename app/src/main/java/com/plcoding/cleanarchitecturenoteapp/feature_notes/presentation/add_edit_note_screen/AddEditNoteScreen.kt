@@ -57,7 +57,7 @@ fun AddEditNoteScreen(
     isFavorite: Boolean
 ) {
 
-    val context = LocalContext.current
+    //val context = LocalContext.current
     val noteTitle = viewModel.noteTitle
     val noteContent = viewModel.noteContent
     val isFavoriteState = if (!isFavorite) viewModel.addToFAvoritesState.value else isFavorite
