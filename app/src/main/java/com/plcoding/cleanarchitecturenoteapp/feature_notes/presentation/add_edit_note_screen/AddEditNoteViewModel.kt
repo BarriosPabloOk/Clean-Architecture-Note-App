@@ -44,6 +44,10 @@ class AddEditViewModel @Inject constructor(
     private val _addToFAvoritesState = mutableStateOf<Boolean>(false)
     val addToFAvoritesState : State<Boolean> = _addToFAvoritesState
 
+
+    private val _alertDialogState = mutableStateOf<Boolean>(false)
+    val alertDialogState : State<Boolean> = _alertDialogState
+
     private val _evenFlow = MutableSharedFlow<UiEvents>()
     val eventFlow : SharedFlow<UiEvents> = _evenFlow
 
@@ -98,10 +102,23 @@ class AddEditViewModel @Inject constructor(
             is AddNoteEvent.ChangeColor -> {
                 _colorState.value = events.color
             }
-            is AddNoteEvent.AddToFavorites ->{
+            is AddNoteEvent.AddToFavorites -> {
                 _addToFAvoritesState.value = events.IsFavorite
 
             }
+//            is AddNoteEvent.BackPressed ->{
+//                _alertDialogState.value = events.pressed
+//                viewModelScope.launch {
+//                    _evenFlow.emit(UiEvents.ShowAlertDialog(message = "¿Desea guardar los cambioso prefiere descartarlos?"))
+//                    //_evenFlow.emit(UiEvents.ShowSnackBar(message = "¿Desea guardar los cambioso prefiere descartarlos?"))
+////                    try {
+////                        _evenFlow.emit(UiEvents.ShowAlertDialog)
+////                    }catch (e: InvalidNoteException){
+////                        _evenFlow.emit(UiEvents.ShowSnackBar(message = e.message ?: "Acción cancelada"))
+////                    }
+//                }
+//
+//            }
             is AddNoteEvent.SaveNote -> {
                 viewModelScope.launch {
                     try {
@@ -122,6 +139,7 @@ class AddEditViewModel @Inject constructor(
                 }
 
             }
+
         }
     }
 

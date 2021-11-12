@@ -1,5 +1,8 @@
 package com.plcoding.cleanarchitecturenoteapp.feature_notes.presentation.add_edit_note_screen
 
+import android.content.DialogInterface
+import android.view.KeyEvent
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -27,6 +30,11 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.input.key.type
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -36,6 +44,7 @@ import com.google.accompanist.insets.navigationBarsWithImePadding
 
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.domain.model.Note
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.presentation.add_edit_note_screen.components.AddEditTextFields
+import com.plcoding.cleanarchitecturenoteapp.feature_notes.presentation.notes_screen.NoteEvents
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -45,12 +54,23 @@ fun AddEditNoteScreen(
     navController: NavController,
     viewModel: AddEditViewModel = hiltViewModel(),
     noteColor: Int,
-    isFavorite : Boolean
+    isFavorite: Boolean
 ) {
 
+    val context = LocalContext.current
     val noteTitle = viewModel.noteTitle
     val noteContent = viewModel.noteContent
     val isFavoriteState = if (!isFavorite) viewModel.addToFAvoritesState.value else isFavorite
+
+
+
+//    if (noteTitle.value.text.isNotBlank() && noteContent.value.text.isNotBlank()) {
+//        BackHandler(onBack = {
+//
+//            viewModel.onEvent(AddNoteEvent.BackPressed(!viewModel.alertDialogState.value))
+//        })
+//    }
+
 
     val scaffoldState = rememberScaffoldState()
     val backgroundAnimatable = remember {
@@ -74,6 +94,33 @@ fun AddEditNoteScreen(
                 is UiEvents.SaveNote -> {
                     navController.navigateUp()
                 }
+//                is UiEvents.ShowAlertDialog -> {
+////                    val result = scaffoldState.snackbarHostState.showSnackbar(
+////                        message = events.message,
+////                        actionLabel = "Guardar"
+////                    )
+////                    if (result == SnackbarResult.ActionPerformed) {
+////                        viewModel.onEvent(AddNoteEvent.SaveNote)
+////                    } else {
+////                        navController.navigateUp()
+////                    }
+//                    val alert = android.app.AlertDialog.Builder(context)
+//                        .setTitle("Guardar cambios")
+//                        .setMessage("¿Desea guardar los cambioso prefiere descartarlos?")
+//                        .setNegativeButton("Descartar"){view,_ ->
+//                            navController.navigateUp()
+//                            view.dismiss()
+//                        }
+//                        .setPositiveButton("Guardar"){view, _ ->
+//                            viewModel.onEvent(AddNoteEvent.SaveNote)
+//                            view.dismiss()
+//                        }
+//                        .setCancelable(false)
+//                        .create()
+//
+//                    alert.getButton(DialogInterface.BUTTON_NEGATIVE).setBackgroundColor(Color.Black.toArgb())
+//                    alert.show()
+//                }
             }
         }
     }
@@ -94,7 +141,7 @@ fun AddEditNoteScreen(
         scaffoldState = scaffoldState,
         modifier = Modifier.navigationBarsWithImePadding()
 
-        ) {
+    ) {
 
         Column(
             modifier = Modifier
@@ -175,8 +222,8 @@ fun AddEditNoteScreen(
                     modifier = Modifier
                         .align(Alignment.CenterVertically)
                         .clickable {
-                        viewModel.onEvent(AddNoteEvent.AddToFavorites(!isFavoriteState))
-                    },
+                            viewModel.onEvent(AddNoteEvent.AddToFavorites(!isFavoriteState))
+                        },
                     tint = Color.Black
                 )
             }
@@ -196,8 +243,12 @@ fun AddEditNoteScreen(
                 textStyle = MaterialTheme.typography.body1,
                 modifier = Modifier
                     .fillMaxHeight()
-                    .focusRequester(focusRequester),
+                    .focusRequester(focusRequester)
             )
         }
     }
+}
+
+fun alertDialog() {
+
 }
