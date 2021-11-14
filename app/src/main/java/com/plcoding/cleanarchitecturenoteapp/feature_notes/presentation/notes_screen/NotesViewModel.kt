@@ -37,7 +37,7 @@ class NotesViewModel @Inject constructor(
     private var getNotesJob : Job? =null
 
     init{
-        getNotes(noteOrder = NoteOrder.Date(OrderType.Descending))
+        getNotes(string = "", noteOrder = NoteOrder.Date(OrderType.Descending))
     }
 
     fun onEvent(events: NoteEvents){
@@ -47,7 +47,7 @@ class NotesViewModel @Inject constructor(
                         state.value.order.orderType == events.order.orderType){
                     return
                 }
-                getNotes(events.order)
+                getNotes(_searchState.value.text,events.order)
             }
             is NoteEvents.EnteredSearch->{
                 _searchState.value = searchState.value.copy(
@@ -61,7 +61,7 @@ class NotesViewModel @Inject constructor(
                 )
             }
             is NoteEvents.Search->{
-                searchInNotes(searchState.value.text, _state.value.noteList)
+                getNotes(_searchState.value.text, events.order)
             }
             is NoteEvents.DeleteNote -> {
                 viewModelScope.launch {
@@ -84,26 +84,16 @@ class NotesViewModel @Inject constructor(
         }
     }
 
-    private fun getNotes(noteOrder : NoteOrder){
+    private fun getNotes(string: String, noteOrder : NoteOrder){
         getNotesJob?.cancel()
         getNotesJob = noteUseCasesWrapper.getNotesUseCase(noteOrder)
             .onEach { notes ->
                 _state.value = state.value.copy(
-                    noteList = notes,
+                    noteList = notes.filter { it.title.lowercase().contains(string.lowercase()) },
                     order = noteOrder,
                 )
             }.launchIn(viewModelScope)
 
     }
-    private fun searchInNotes(string: String, noteList :List<Note>){
-        getNotesJob?.cancel()
-        getNotesJob = noteUseCasesWrapper.searchUseCase(string, noteList)
-            .onEach { notes ->
-                _state.value = state.value.copy(
-                    noteList = notes,
-                    order = NoteOrder.Date(OrderType.Descending),
-                )
-            }.launchIn(viewModelScope)
 
-    }
 }

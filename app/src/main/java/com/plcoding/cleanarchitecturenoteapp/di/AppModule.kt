@@ -40,7 +40,6 @@ object AppModule {
             deleteNoteUseCase = DeleteNoteUseCase(repository = repository),
             addNoteUseCase = AddNoteUseCase(repository = repository),
             getSingleNoteUseCase = GetSingleNoteUseCase(repository = repository),
-            searchUseCase = SearchUseCase()
         )
     }
 }

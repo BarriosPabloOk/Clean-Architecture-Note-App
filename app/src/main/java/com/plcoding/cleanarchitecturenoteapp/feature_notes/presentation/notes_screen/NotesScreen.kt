@@ -30,6 +30,7 @@ fun NotesScreen(
     viewModel: NotesViewModel = hiltViewModel()
 ) {
     val state = viewModel.state
+    val searchState = viewModel.searchState
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
 
@@ -73,6 +74,21 @@ fun NotesScreen(
                 }
 
             }
+            AddEditTextFields(
+                text = searchState.value.text,
+                hint = searchState.value.hint,
+                onValueChange = {
+
+                    viewModel.onEvent(NoteEvents.EnteredSearch(it))
+                    viewModel.onEvent(NoteEvents.Search(it, state.value.order))
+                },
+                onFocusChange = {
+                    viewModel.onEvent(NoteEvents.ChangeFocusSearch(it))
+                },
+                isHintVisible = searchState.value.isHintVisible,
+                singleLine = true,
+                textStyle = MaterialTheme.typography.h5,
+            )
             AnimatedVisibility(
                 visible = state.value.isOrderSectionVisible,
                 enter = fadeIn() + slideInVertically(),
@@ -104,8 +120,10 @@ fun NotesScreen(
                             .fillMaxWidth()
                             //.defaultMinSize(minHeight = 50.dp)
                             .clickable {
-                                navController.navigate(Screen.AddEditScreen.route
-                                        + "?noteId=${note.id}&noteColor=${note.color}&isFavorite=${note.isFavorite}")
+                                navController.navigate(
+                                    Screen.AddEditScreen.route
+                                            + "?noteId=${note.id}&noteColor=${note.color}&isFavorite=${note.isFavorite}"
+                                )
                             },
                         onDeletedClicked = {
                             viewModel.onEvent(NoteEvents.DeleteNote(note))
