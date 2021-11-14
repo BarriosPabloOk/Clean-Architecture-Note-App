@@ -18,6 +18,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.domain.util.NoteOrder
+import com.plcoding.cleanarchitecturenoteapp.feature_notes.domain.util.OrderType
+import com.plcoding.cleanarchitecturenoteapp.feature_notes.presentation.add_edit_note_screen.AddNoteEvent
+import com.plcoding.cleanarchitecturenoteapp.feature_notes.presentation.add_edit_note_screen.components.AddEditTextFields
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.presentation.notes_screen.components.NoteItem
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.presentation.notes_screen.components.OrderSection
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.presentation.util.Screen
