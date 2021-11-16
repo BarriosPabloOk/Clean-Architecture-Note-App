@@ -86,13 +86,24 @@ class NotesViewModel @Inject constructor(
 
     private fun getNotes(string: String, noteOrder : NoteOrder){
         getNotesJob?.cancel()
-        getNotesJob = noteUseCasesWrapper.getNotesUseCase(noteOrder)
-            .onEach { notes ->
-                _state.value = state.value.copy(
-                    noteList = notes.filter { it.title.lowercase().contains(string.lowercase()) },
-                    order = noteOrder,
-                )
-            }.launchIn(viewModelScope)
+        if (_searchState.value.text.isEmpty()){
+            getNotesJob = noteUseCasesWrapper.getNotesUseCase(noteOrder)
+                .onEach { notes ->
+                    _state.value = state.value.copy(
+                        noteList = notes,
+                        order = noteOrder,
+                    )
+                }.launchIn(viewModelScope)
+        }else{
+            getNotesJob = noteUseCasesWrapper.searchUseCase(string = string, noteOrder = noteOrder)
+                .onEach { notes ->
+                    _state.value = state.value.copy(
+                        noteList = notes,
+                        order = noteOrder,
+                    )
+                }.launchIn(viewModelScope)
+        }
+
 
     }
 
