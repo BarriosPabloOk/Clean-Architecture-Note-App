@@ -8,7 +8,6 @@ import com.plcoding.cleanarchitecturenoteapp.feature_notes.domain.model.Note
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.domain.use_cases.NoteUseCasesWrapper
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.domain.util.NoteOrder
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.domain.util.OrderType
-import com.plcoding.cleanarchitecturenoteapp.feature_notes.presentation.add_edit_note_screen.TextNoteFieldState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
@@ -25,12 +24,14 @@ class NotesViewModel @Inject constructor(
     val state : State<NoteState> = _state
 
 
-    private val _searchState = mutableStateOf<TextNoteFieldState>(
-        TextNoteFieldState(
-            hint = "Buscar nota..."
+    private val _searchState = mutableStateOf<SearchTexFieldState>(
+        SearchTexFieldState(
+            text = "",
+            hint = "Buscar nota...",
+            isSearchFieldVisible = false
         )
     )
-    val searchState : State<TextNoteFieldState> = _searchState
+    val searchState : State<SearchTexFieldState> = _searchState
 
     private var recentlyDeletedNote : Note? = null
 
@@ -49,20 +50,24 @@ class NotesViewModel @Inject constructor(
                 }
                 getNotes(_searchState.value.text,events.order)
             }
+
+
             is NoteEvents.EnteredSearch->{
                 _searchState.value = searchState.value.copy(
                     text = events.value
                 )
             }
-            is NoteEvents.ChangeFocusSearch->{
+            is NoteEvents.isVisibleSearchWidget ->{
                 _searchState.value = searchState.value.copy(
-                    isHintVisible = !events.focusState.isFocused &&
-                            searchState.value.text.isBlank()
+                    isSearchFieldVisible = events.value
                 )
+
             }
             is NoteEvents.Search->{
                 getNotes(_searchState.value.text, events.order)
             }
+
+
             is NoteEvents.DeleteNote -> {
                 viewModelScope.launch {
                     noteUseCasesWrapper.deleteNoteUseCase(events.note)
@@ -70,12 +75,16 @@ class NotesViewModel @Inject constructor(
                 }
 
             }
+
+
             is NoteEvents.RestoreNote -> {
                 viewModelScope.launch {
                     noteUseCasesWrapper.addNoteUseCase(recentlyDeletedNote ?: return@launch)
                     recentlyDeletedNote = null
                 }
             }
+
+
             is NoteEvents.ToggleOrderSection -> {
                 _state.value = state.value.copy(
                     isOrderSectionVisible = !state.value.isOrderSectionVisible

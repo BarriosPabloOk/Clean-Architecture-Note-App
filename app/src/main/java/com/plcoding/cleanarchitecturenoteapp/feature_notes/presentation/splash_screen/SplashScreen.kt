@@ -16,13 +16,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.presentation.util.Screen
 import kotlinx.coroutines.delay
 import com.plcoding.cleanarchitecturenoteapp.R
+import com.plcoding.cleanarchitecturenoteapp.ui.theme.DarkGray
 
 @Composable
 fun SplashScreen(
@@ -63,33 +69,27 @@ fun SplashScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Box(
+            Image(
                 modifier = Modifier
                     .scale(scale.value)
-                    .clip(shape = CircleShape)
-                    .size(180.dp)
-                    .background(Color.White)
-
-
-
-            ) {
-                Image(
-                    modifier = Modifier
-                        .scale(scale.value)
-                        .size(128.dp)
-                        .align(Alignment.Center),
-                    painter = painterResource(id = R.drawable.splash_logo),
-                    contentDescription = "Splash_Icon"
-                )
-            }
+                    .size(128.dp),
+                painter = painterResource(id = R.drawable.splash_logo),
+                contentDescription = "Splash_Icon"
+            )
             Spacer(modifier = Modifier.padding(10.dp))
             Text(
                 text = "Buenas Notas",
-                color = MaterialTheme.colors.primary,
-                style = MaterialTheme.typography.h3,
-                modifier = Modifier.scale(scale.value)
+                color = MaterialTheme.colors.onBackground.copy(
+                    alpha = 0.8f
+                ),
+                fontSize = MaterialTheme.typography.h3.fontSize,
+                modifier = Modifier
+                    .scale(scale.value),
+
+
             )
         }
+
     }
 
 }

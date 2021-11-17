@@ -38,8 +38,10 @@ class GetNotesUseCase(
                                     notes.filter { !it.isFavorite }
                                         .sortedByDescending { it.timestamp }
                         }
+
                     }
                 }
+
             }
         }
     }

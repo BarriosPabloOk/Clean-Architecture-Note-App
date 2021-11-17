@@ -4,7 +4,10 @@ import androidx.compose.ui.graphics.Color
 
 // Theme
 val DarkGray = Color(0xFF202020)
-val LightBlue = Color(0xFFD7E8DE)
+val LightGreenBackGround = Color(0xFFC4CFC8)
+val GreenApp = Color(0xFF79ab8c)
+val GreenAppVariant = Color(0xFF557963)
+val LightGreenApp = Color(0xFF60C78A)
 
 //Custom Colors
 val RedOrange = Color(0xffffab91)

@@ -7,11 +7,15 @@ import com.plcoding.cleanarchitecturenoteapp.feature_notes.presentation.add_edit
 
 sealed class NoteEvents{
     data class Order(val order: NoteOrder) : NoteEvents()
+
     data class EnteredSearch(val value : String) : NoteEvents()
-    data class ChangeFocusSearch(val focusState : FocusState): NoteEvents()
+    data class isVisibleSearchWidget(val value : Boolean): NoteEvents()
     data class Search(val string: String, val order:NoteOrder): NoteEvents()
+
     data class DeleteNote (val note : Note) : NoteEvents()
+
     object  RestoreNote : NoteEvents()
+
     object ToggleOrderSection: NoteEvents()
 
 }

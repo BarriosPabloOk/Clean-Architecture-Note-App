@@ -4,5 +4,4 @@ data class TextNoteFieldState(
     val text : String= "",
     val hint : String = "",
     val isHintVisible : Boolean = true,
-
 )

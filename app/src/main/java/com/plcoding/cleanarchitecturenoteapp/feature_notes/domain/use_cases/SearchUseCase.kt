@@ -8,16 +8,15 @@ import javax.inject.Inject
 
 
 class SearchUseCase @Inject constructor(
-    //private val repository:
     private val getNotesUseCase: GetNotesUseCase
 ) {
 
     operator fun invoke(string: String, noteOrder: NoteOrder) : Flow<List<Note>> {
-        val noteList = getNotesUseCase(noteOrder = noteOrder).map { notes->
+        val filteredNoteList = getNotesUseCase(noteOrder = noteOrder).map { notes->
                 notes.filter { singleNote->
                     singleNote.title.lowercase().contains(string.lowercase())
                 }
             }
-        return noteList
+        return filteredNoteList
     }
 }

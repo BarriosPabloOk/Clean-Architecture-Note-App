@@ -37,6 +37,7 @@ import androidx.compose.ui.input.key.type
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -206,7 +207,10 @@ fun AddEditNoteScreen(
                     isHintVisible = noteTitle.value.isHintVisible,
                     singleLine = true,
                     textStyle = MaterialTheme.typography.h5,
-                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                    keyboardOptions = KeyboardOptions(
+                        imeAction = ImeAction.Next,
+                        capitalization = KeyboardCapitalization.Sentences,
+                    ),
                     keyboardActions = KeyboardActions(
                         onNext = { focusRequester.requestFocus() }
                     ),
@@ -241,6 +245,9 @@ fun AddEditNoteScreen(
                 },
                 isHintVisible = noteContent.value.isHintVisible,
                 textStyle = MaterialTheme.typography.body1,
+                keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.Sentences,
+                ),
                 modifier = Modifier
                     .fillMaxHeight()
                     .focusRequester(focusRequester)

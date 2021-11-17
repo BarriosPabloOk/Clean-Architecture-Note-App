@@ -41,7 +41,7 @@ object AppModule {
             addNoteUseCase = AddNoteUseCase(repository = repository),
             getSingleNoteUseCase = GetSingleNoteUseCase(repository = repository),
             searchUseCase = SearchUseCase(
-                GetNotesUseCase(repository = repository)
+                getNotesUseCase = GetNotesUseCase(repository = repository)
             )
         )
     }
