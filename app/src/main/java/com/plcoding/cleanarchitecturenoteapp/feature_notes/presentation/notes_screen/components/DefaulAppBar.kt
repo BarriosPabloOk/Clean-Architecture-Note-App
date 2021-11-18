@@ -42,7 +42,7 @@ fun DefaultAppBar(
             }
 
         },
-        backgroundColor = GreenApp
+        backgroundColor = MaterialTheme.colors.primary
     )
 }
 

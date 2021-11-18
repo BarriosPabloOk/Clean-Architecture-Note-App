@@ -5,7 +5,8 @@
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryDark">@color/purple_700</item>
         <item name="colorAccent">@color/teal_200</item>
-        <item name="android:statusBarColor">@color/dark_green</item>
+        <item name="android:statusBarColor">@color/LightGreenStatusBar</item>
+        <item name="android:windowBackground">@color/LightGreenBackGround</item>
         <!-- Customize your theme here. -->
 
 

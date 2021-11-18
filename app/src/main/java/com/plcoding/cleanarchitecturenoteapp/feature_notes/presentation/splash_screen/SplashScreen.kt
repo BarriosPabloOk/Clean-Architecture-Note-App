@@ -79,9 +79,7 @@ fun SplashScreen(
             Spacer(modifier = Modifier.padding(10.dp))
             Text(
                 text = "Buenas Notas",
-                color = MaterialTheme.colors.onBackground.copy(
-                    alpha = 0.8f
-                ),
+                color = MaterialTheme.colors.onBackground,
                 fontSize = MaterialTheme.typography.h3.fontSize,
                 modifier = Modifier
                     .scale(scale.value),

@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.graphics.ColorUtils
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.domain.model.Note
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.presentation.add_edit_note_screen.AddNoteEvent
+import com.plcoding.cleanarchitecturenoteapp.ui.theme.DarkGray
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -84,7 +85,7 @@ fun NoteItem(
             Text(
                 text = note.title,
                 style = MaterialTheme.typography.h6,
-                color = MaterialTheme.colors.onSurface,
+                color = DarkGray,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -92,7 +93,7 @@ fun NoteItem(
             Text(
                 text = note.content,
                 style = MaterialTheme.typography.body2,
-                color = MaterialTheme.colors.onSurface,
+                color = DarkGray,
                 maxLines = 10,
                 overflow = TextOverflow.Ellipsis,
             )
