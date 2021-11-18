@@ -73,7 +73,7 @@ fun SplashScreen(
                 modifier = Modifier
                     .scale(scale.value)
                     .size(128.dp),
-                painter = painterResource(id = R.drawable.splash_logo),
+                painter = painterResource(id = R.drawable.nota_adhesiva_contorno),
                 contentDescription = "Splash_Icon"
             )
             Spacer(modifier = Modifier.padding(10.dp))

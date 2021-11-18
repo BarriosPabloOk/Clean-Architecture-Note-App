@@ -21,12 +21,12 @@ private val LightColorPalette = lightColors(
 private val DarkColorPalette = darkColors(
     primary = DarkGreenApp,
     onPrimary = LightGray,
-    primaryVariant = DarkGreenAppVariant,
+    primaryVariant = DarkGreenVariant,
 
     background = DarkGreenBackGround,
     onBackground = LightGray,
 
-    surface = LightGreenBackGround,
+    surface = DarkGreenBackGround,
     onSurface = LightGray
 )
 
