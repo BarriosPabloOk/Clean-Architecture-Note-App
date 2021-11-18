@@ -80,7 +80,6 @@ fun NoteItem(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp)
-                .padding(end = 30.dp)
         ) {
             Text(
                 text = note.title,
@@ -129,10 +128,12 @@ fun NoteItem(
         
         IconButton(
             onClick = onDeletedClicked,
-            modifier = Modifier.align(Alignment.BottomEnd),
+            modifier = Modifier
+                .align(Alignment.BottomEnd),
 
         ) {
             Icon(
+
                 imageVector = Icons.Default.Delete,
                 contentDescription = "Delete a note",
                 tint = Color.Black

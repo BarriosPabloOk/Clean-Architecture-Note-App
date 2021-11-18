@@ -33,11 +33,13 @@ fun NotesScreen(
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
 
+
     Scaffold(
         topBar = {
 
             MainTopBarController(
                 searchState = searchState,
+                isSearchFieldVisible = searchState.value.isSearchFieldVisible,
                 onSearchIconClicked = {
                     viewModel.onEvent(NoteEvents.isVisibleSearchWidget(!searchState.value.isSearchFieldVisible))
                 },
@@ -85,7 +87,6 @@ fun NotesScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-//                .padding(8.dp)
         ) {
             AnimatedVisibility(
                 visible = state.value.isOrderSectionVisible,
@@ -106,16 +107,16 @@ fun NotesScreen(
             }
             LazyColumn(
                 modifier = Modifier
-                    .fillMaxSize(),
+                    .fillMaxSize()
+                    .animateContentSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                contentPadding = PaddingValues(8.dp)
+                contentPadding = PaddingValues(16.dp)
             ) {
                 items(state.value.noteList) { note ->
                     NoteItem(
                         note = note,
                         modifier = Modifier
                             .fillMaxWidth()
-                            //.defaultMinSize(minHeight = 50.dp)
                             .clickable {
                                 navController.navigate(
                                     Screen.AddEditScreen.route
