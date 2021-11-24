@@ -1,5 +1,7 @@
 package com.plcoding.cleanarchitecturenoteapp.feature_notes.domain.util
 
+import android.util.Log
+
 sealed class NoteOrder(val orderType:OrderType){
     class Title (orderType:OrderType) : NoteOrder(orderType)
     class Color (orderType:OrderType) : NoteOrder(orderType)
@@ -15,3 +17,4 @@ sealed class NoteOrder(val orderType:OrderType){
         }
     }
 }
+

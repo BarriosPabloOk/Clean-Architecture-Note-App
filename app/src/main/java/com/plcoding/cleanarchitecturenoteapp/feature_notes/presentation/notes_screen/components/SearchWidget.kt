@@ -1,5 +1,6 @@
 package com.plcoding.cleanarchitecturenoteapp.feature_notes.presentation.notes_screen.components
 
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,6 +23,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.material.TextFieldDefaults
+import androidx.compose.runtime.remember
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 
 @ExperimentalComposeUiApi
 @Composable
@@ -35,6 +39,7 @@ fun SearchWidget(
 
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
+
 
     Surface(
         modifier = modifier

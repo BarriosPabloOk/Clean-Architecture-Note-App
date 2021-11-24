@@ -1,5 +1,6 @@
 package com.plcoding.cleanarchitecturenoteapp.feature_notes.presentation.notes_screen.components
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment

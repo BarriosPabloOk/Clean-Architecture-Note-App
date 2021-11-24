@@ -1,14 +1,17 @@
 package com.plcoding.cleanarchitecturenoteapp.di
 
 import android.app.Application
+import android.content.Context
 import androidx.room.Room
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.data.data_source.NoteDataBase
+import com.plcoding.cleanarchitecturenoteapp.feature_notes.data.preferences.PreferenceManager
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.data.repository.NoteRepositoryImpl
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.domain.repository.NoteRepository
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.domain.use_cases.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -44,5 +47,12 @@ object AppModule {
                 getNotesUseCase = GetNotesUseCase(repository = repository)
             )
         )
+    }
+
+
+    @Provides
+    @Singleton
+    fun providesPreferencesManager(@ApplicationContext context: Context) : PreferenceManager{
+        return PreferenceManager(context = context)
     }
 }

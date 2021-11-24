@@ -92,5 +92,10 @@ dependencies {
     implementation "com.google.accompanist:accompanist-insets:0.20.0"
     implementation "com.google.accompanist:accompanist-insets-ui:0.20.0"
 
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
+
+
+
+
 
 }

@@ -1,5 +1,6 @@
 package com.plcoding.cleanarchitecturenoteapp.feature_notes.presentation.notes_screen.components
 
+import androidx.compose.animation.*
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -11,7 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.StarBorder
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
@@ -37,16 +38,20 @@ import java.util.*
 import java.util.concurrent.ThreadLocalRandom.current
 
 
+@ExperimentalAnimationApi
 @Composable
 fun NoteItem(
     note: Note,
     modifier: Modifier = Modifier,
     cornerRadius: Dp = 10.dp,
     cutCornerSize: Dp = 30.dp,
-    onDeletedClicked: () -> Unit
-) {
+    onDeletedClicked: () -> Unit,
+
+
+    ) {
     val date = Date(note.timestamp)
     val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault())
+
 
     Box(
         modifier = modifier
@@ -104,13 +109,13 @@ fun NoteItem(
 
                 ) {
                 Text(
-                    text = dateFormat.format(date).replaceFirstChar {it.uppercase()},
+                    text = dateFormat.format(date).replaceFirstChar { it.uppercase() },
                     style = MaterialTheme.typography.body2.copy(fontSize = 12.sp),
                     color = Color.Black.copy(alpha = 0.5f),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
-                if (note.isFavorite){
+                if (note.isFavorite) {
                     Icon(
                         imageVector = Icons.Default.Star,
                         contentDescription = "add to favorites",
@@ -126,13 +131,13 @@ fun NoteItem(
 
         }
 
-        
+
         IconButton(
             onClick = onDeletedClicked,
             modifier = Modifier
                 .align(Alignment.BottomEnd),
 
-        ) {
+            ) {
             Icon(
 
                 imageVector = Icons.Default.Delete,
@@ -141,9 +146,13 @@ fun NoteItem(
 
             )
         }
-
-
     }
+    Spacer(
+        modifier = Modifier
+            .height(16.dp)
+
+    )
+
 }
 
 
