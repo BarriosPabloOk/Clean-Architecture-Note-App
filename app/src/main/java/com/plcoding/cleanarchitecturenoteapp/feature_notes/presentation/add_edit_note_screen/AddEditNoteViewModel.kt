@@ -106,19 +106,10 @@ class AddEditViewModel @Inject constructor(
                 _addToFAvoritesState.value = events.IsFavorite
 
             }
-//            is AddNoteEvent.BackPressed ->{
-//                _alertDialogState.value = events.pressed
-//                viewModelScope.launch {
-//                    _evenFlow.emit(UiEvents.ShowAlertDialog(message = "¿Desea guardar los cambioso prefiere descartarlos?"))
-//                    //_evenFlow.emit(UiEvents.ShowSnackBar(message = "¿Desea guardar los cambioso prefiere descartarlos?"))
-////                    try {
-////                        _evenFlow.emit(UiEvents.ShowAlertDialog)
-////                    }catch (e: InvalidNoteException){
-////                        _evenFlow.emit(UiEvents.ShowSnackBar(message = e.message ?: "Acción cancelada"))
-////                    }
-//                }
-//
-//            }
+            is AddNoteEvent.BackPressed ->{
+                _alertDialogState.value = events.pressed
+
+            }
             is AddNoteEvent.SaveNote -> {
                 viewModelScope.launch {
                     try {

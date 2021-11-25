@@ -9,7 +9,7 @@ sealed class AddNoteEvent(){
     data class ChangeFocusContent(val focusState : FocusState): AddNoteEvent()
     data class ChangeColor(val color : Int): AddNoteEvent()
     data class AddToFavorites(val IsFavorite : Boolean) : AddNoteEvent()
-//    data class BackPressed(val pressed: Boolean) : AddNoteEvent()
+    data class BackPressed(val pressed: Boolean) : AddNoteEvent()
     object SaveNote: AddNoteEvent()
 }
 
