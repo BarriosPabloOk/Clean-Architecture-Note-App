@@ -10,9 +10,11 @@ import androidx.lifecycle.viewModelScope
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.data.preferences.PreferenceManager
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.domain.model.Note
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.domain.use_cases.NoteUseCasesWrapper
+import com.plcoding.cleanarchitecturenoteapp.feature_notes.domain.util.DataStoreNoteOrder
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.domain.util.NoteOrder
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.domain.util.OrderType
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
@@ -49,14 +51,9 @@ class NotesViewModel @Inject constructor(
 
 
     init{
-        viewModelScope.launch {
-            val a = preferenceManager.readDataStore.collectLatest {
-                if (it == "Descending"){
-                    getNotes(string = "", noteOrder = NoteOrder.Date(OrderType.Descending))
-                }else{
-                    getNotes(string = "", noteOrder = NoteOrder.Date(OrderType.Ascending))
-                }
-
+        viewModelScope.launch(Dispatchers.IO) {
+            noteUseCasesWrapper.readDataStoreUseCase(){
+                getNotes("", it)
             }
         }
 
@@ -137,9 +134,8 @@ class NotesViewModel @Inject constructor(
 
     }
 
-    fun saveInDataStore(//noteOrder: String,
-                        orderType: String) = viewModelScope.launch{
-        preferenceManager.saveInDataStore(orderType = orderType)
+    fun saveInDataStore(noteOrder: String, orderType: String) = viewModelScope.launch{
+        noteUseCasesWrapper.saveDataStoreUseCase(noteOrder = noteOrder, orderType = orderType)
     }
 
 }

@@ -6,4 +6,6 @@ data class NoteUseCasesWrapper (
     val addNoteUseCase: AddNoteUseCase,
     val getSingleNoteUseCase: GetSingleNoteUseCase,
     val searchUseCase: SearchUseCase,
+    val readDataStoreUseCase: ReadDataStoreUseCase,
+    val saveDataStoreUseCase: SaveDataStoreUseCase,
 )

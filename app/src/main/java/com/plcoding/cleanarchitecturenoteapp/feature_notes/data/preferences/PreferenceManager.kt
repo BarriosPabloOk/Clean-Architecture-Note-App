@@ -9,6 +9,9 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.plcoding.cleanarchitecturenoteapp.feature_notes.domain.util.DataStoreNoteOrder
+import com.plcoding.cleanarchitecturenoteapp.feature_notes.domain.util.DataStoreOrder
+import com.plcoding.cleanarchitecturenoteapp.feature_notes.domain.util.NoteOrder
 
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
@@ -31,18 +34,20 @@ class PreferenceManager @Inject constructor(
 
 
     private object PreferenceKeys {
-        val ORDER_TYPE = stringPreferencesKey("order_type")
         val NOTE_ORDER = stringPreferencesKey("note_order")
+        val ORDER_TYPE = stringPreferencesKey("order_type")
+
 
     }
-    suspend fun saveInDataStore(orderType:String){
+    suspend fun saveInDataStore(noteOrder: String, orderType:String){
         context.dataStore.edit {
+            it[PreferenceKeys.NOTE_ORDER] = noteOrder
             it[PreferenceKeys.ORDER_TYPE] = orderType
 
         }
     }
 
-    val readDataStore: Flow<String> = context.dataStore.data
+    val readDataStore: Flow<DataStoreOrder> = context.dataStore.data
         .catch {
             exception ->
             if (exception is IOException){
@@ -54,9 +59,10 @@ class PreferenceManager @Inject constructor(
         }
         .map {preference ->
 
-            val pref = preference[PreferenceKeys.ORDER_TYPE] ?: "Descending"
+            val noteOrder = preference[PreferenceKeys.NOTE_ORDER] ?: DataStoreNoteOrder.DATE.name
+            val orderType = preference[PreferenceKeys.ORDER_TYPE] ?: DataStoreNoteOrder.DESCENDING.name
 
-            pref
+            DataStoreOrder(noteOrder, orderType)
     }
 
 

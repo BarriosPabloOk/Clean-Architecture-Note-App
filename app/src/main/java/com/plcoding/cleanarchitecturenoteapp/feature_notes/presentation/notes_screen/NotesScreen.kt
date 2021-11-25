@@ -104,7 +104,9 @@ fun NotesScreen(
                         viewModel.onEvent(
                             NoteEvents.Order(it)
                         )
-                        viewModel.saveInDataStore(it.orderType.javaClass.name.substringAfter("$"))
+                        val noteOrder = it.javaClass.name.substringAfter("$").uppercase()
+                        val orderType = it.orderType.javaClass.name.substringAfter("$").uppercase()
+                        viewModel.saveInDataStore(noteOrder = noteOrder, orderType = orderType)
 
                     }
                 )

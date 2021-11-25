@@ -37,7 +37,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providesNotesUseCases(repository: NoteRepository): NoteUseCasesWrapper{
+    fun providesNotesUseCases(repository: NoteRepository,@ApplicationContext context: Context): NoteUseCasesWrapper{
         return NoteUseCasesWrapper(
             getNotesUseCase = GetNotesUseCase(repository = repository),
             deleteNoteUseCase = DeleteNoteUseCase(repository = repository),
@@ -45,7 +45,13 @@ object AppModule {
             getSingleNoteUseCase = GetSingleNoteUseCase(repository = repository),
             searchUseCase = SearchUseCase(
                 getNotesUseCase = GetNotesUseCase(repository = repository)
-            )
+            ),
+            readDataStoreUseCase = ReadDataStoreUseCase(
+                preferenceManager = PreferenceManager(context = context),
+            ),
+            saveDataStoreUseCase = SaveDataStoreUseCase(
+                preferenceManager = PreferenceManager(context = context)
+            ),
         )
     }
 
