@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import com.google.accompanist.insets.navigationBarsWithImePadding
 
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.domain.model.Note
@@ -219,6 +220,7 @@ fun AddEditNoteScreen(
                             it.key == Key.Back &&
                             it.type == KeyEventType.KeyUp) {
                             viewModel.onEvent(AddNoteEvent.BackPressed(!alertState))
+
 
                         }
                         true
