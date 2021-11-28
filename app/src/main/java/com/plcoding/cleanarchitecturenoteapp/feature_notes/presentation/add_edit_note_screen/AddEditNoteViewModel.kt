@@ -4,9 +4,7 @@ package com.plcoding.cleanarchitecturenoteapp.feature_notes.presentation.add_edi
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.toArgb
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.domain.model.InvalidNoteException
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.domain.model.Note
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.domain.use_cases.NoteUseCasesWrapper
@@ -42,20 +40,20 @@ class AddEditViewModel @Inject constructor(
 
 
     private val _addToFAvoritesState = mutableStateOf<Boolean>(false)
-    val addToFAvoritesState : State<Boolean> = _addToFAvoritesState
+    val addToFAvoritesState: State<Boolean> = _addToFAvoritesState
 
 
     private val _alertDialogState = mutableStateOf<Boolean>(false)
-    val alertDialogState : State<Boolean> = _alertDialogState
+    val alertDialogState: State<Boolean> = _alertDialogState
 
     private val _evenFlow = MutableSharedFlow<UiEvents>()
-    val eventFlow : SharedFlow<UiEvents> = _evenFlow
+    val eventFlow: SharedFlow<UiEvents> = _evenFlow
 
-    private var currentNoteId :Int? = null
+    private var currentNoteId: Int? = null
 
-    init{
-        savedStateHandle.get<Int>("noteId")?.let { noteId->
-            if (noteId != -1){
+    init {
+        savedStateHandle.get<Int>("noteId")?.let { noteId ->
+            if (noteId != -1) {
                 viewModelScope.launch {
                     noteUseCasesWrapper.getSingleNoteUseCase(noteId)?.also { note ->
                         currentNoteId = note.id
@@ -106,34 +104,58 @@ class AddEditViewModel @Inject constructor(
                 _addToFAvoritesState.value = events.IsFavorite
 
             }
-            is AddNoteEvent.BackPressed ->{
+            is AddNoteEvent.BackPressed -> {
                 _alertDialogState.value = events.pressed
 
             }
             is AddNoteEvent.SaveNote -> {
                 viewModelScope.launch {
-                    try {
-                        noteUseCasesWrapper.addNoteUseCase(
-                            Note(
-                                title = noteTitle.value.text,
-                                content = noteContent.value.text,
-                                timestamp = System.currentTimeMillis(),
-                                color = colorState.value,
-                                id = currentNoteId,
-                                isFavorite = addToFAvoritesState.value
-                            )
-                        )
-                        _evenFlow.emit(UiEvents.SaveNote)
-                    }catch (e : InvalidNoteException){
-                        _evenFlow.emit(UiEvents.ShowSnackBar(message = e.message ?: "No se pudo guardar la nota"))
-                    }
+                    saveNote()
                 }
 
             }
 
+//            is AddNoteEvent.SaveNoteOnStop->{
+//                if(_noteTitle.value.text.isNotBlank() && _noteContent.value.text.isNotBlank()){
+//                    viewModelScope.launch {
+//                        saveNote()
+//                    }
+//
+//                }
+//            }
+
         }
     }
 
+    private suspend fun saveNote() {
+        try {
+            noteUseCasesWrapper.addNoteUseCase(
+                Note(
+                    title = noteTitle.value.text,
+                    content = noteContent.value.text,
+                    timestamp = System.currentTimeMillis(),
+                    color = colorState.value,
+                    id = currentNoteId,
+                    isFavorite = addToFAvoritesState.value
+                )
+            )
+
+            _evenFlow.emit(UiEvents.SaveNote)
+
+        } catch (e: InvalidNoteException) {
+            _evenFlow.emit(
+                UiEvents.ShowSnackBar(
+                    message = e.message ?: "No se pudo guardar la nota"
+                )
+            )
+        }
+    }
+
+
+
+
 }
+
+
 
 

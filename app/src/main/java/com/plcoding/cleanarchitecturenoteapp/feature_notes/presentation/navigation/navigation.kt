@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.presentation.add_edit_note_screen.AddEditNoteScreen
+import com.plcoding.cleanarchitecturenoteapp.feature_notes.presentation.add_edit_note_screen.AddEditViewModel
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.presentation.notes_screen.NotesScreen
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.presentation.splash_screen.SplashScreen
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.presentation.util.Screen
@@ -19,7 +20,8 @@ import com.plcoding.cleanarchitecturenoteapp.feature_notes.presentation.util.Scr
 @ExperimentalAnimationApi
 @Composable
 fun Navigation(
-    navController: NavHostController
+    navController: NavHostController,
+
 ) {
     NavHost(
         navController = navController,
@@ -29,7 +31,7 @@ fun Navigation(
             NotesScreen(navController = navController)
         }
         composable(
-            route = Screen.AddEditScreen.route + "?noteId={noteId}&noteColor={noteColor}&isFavorite={isFavorite}",
+            route = Screen.AddEditScreen.route + "?noteId={noteId}&noteColor={noteColor}",
             arguments = listOf(
                 navArgument(name = "noteId"){
                     type = NavType.IntType
@@ -39,15 +41,13 @@ fun Navigation(
                     type = NavType.IntType
                     defaultValue = -1
                 },
-                navArgument(name = "isFavorite"){
-                    type = NavType.BoolType
-                    defaultValue = false
-                },
             )
         ){
             val color = it.arguments?.getInt("noteColor") ?: -1
-            val isFavorite = it.arguments?.getBoolean("IsFavorite") ?: false
-            AddEditNoteScreen(navController = navController, noteColor = color, isFavorite = isFavorite)
+            AddEditNoteScreen(
+                navController = navController,
+                noteColor = color,
+            )
         }
         composable(Screen.InitialScreen.route){
             SplashScreen(navController = navController)

@@ -7,7 +7,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 
 @Composable
-fun Dialog(
+fun AddEditAlertDialog(
     showDialog:Boolean,
     onConfirm:() ->Unit,
     onDismiss :() ->Unit,

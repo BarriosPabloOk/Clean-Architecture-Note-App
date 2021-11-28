@@ -11,6 +11,7 @@ sealed class AddNoteEvent(){
     data class AddToFavorites(val IsFavorite : Boolean) : AddNoteEvent()
     data class BackPressed(val pressed: Boolean) : AddNoteEvent()
     object SaveNote: AddNoteEvent()
+    //object SaveNoteOnStop: AddNoteEvent()
 }
 
 
