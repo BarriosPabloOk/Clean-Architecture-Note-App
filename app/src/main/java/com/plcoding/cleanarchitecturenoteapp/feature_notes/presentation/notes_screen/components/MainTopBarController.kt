@@ -18,17 +18,17 @@ import com.plcoding.cleanarchitecturenoteapp.feature_notes.presentation.notes_sc
 @Composable
 fun MainTopBarController(
     searchState: State<SearchTexFieldState>,
-    optionMenuState : Boolean,
+    //optionMenuState : Boolean,
     isSearchFieldVisible : Boolean,
     onSearchIconClicked: () -> Unit,
     onSearchClicked: () -> Unit,
     onToggleClicked: () -> Unit,
-    onOptionClicked : () -> Unit,
-    optionDismiss:()->Unit,
+    //onOptionClicked : () -> Unit,
+    //optionDismiss:()->Unit,
     onValueChange: (String) -> Unit,
     onCloseClicked: () -> Unit,
     textStyle: TextStyle,
-    darkMode : MutableState<Boolean>,
+    //darkMode : MutableState<Boolean>,
 ) {
     DefaultAppBar(
         onSearchIconClicked = {
@@ -37,10 +37,10 @@ fun MainTopBarController(
         onToggleClicked = {
             onToggleClicked()
         },
-        onOptionClicked = {onOptionClicked()},
-        optionMenuState= optionMenuState,
-        optionDismiss = optionDismiss,
-        darkMode = darkMode
+        //onOptionClicked = {onOptionClicked()},
+        //optionMenuState= optionMenuState,
+        //optionDismiss = optionDismiss,
+        //darkMode = darkMode
     )
     AnimatedVisibility(
         visible = isSearchFieldVisible,

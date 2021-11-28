@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 fun NotesScreen(
     navController: NavController,
     viewModel: NotesViewModel = hiltViewModel(),
-    darkMode : MutableState<Boolean>,
+    //darkMode : MutableState<Boolean>,
 ) {
     val noteState = viewModel.noteState
     val searchState = viewModel.searchState
@@ -40,7 +40,7 @@ fun NotesScreen(
 
             MainTopBarController(
                 searchState = searchState,
-                optionMenuState = optionMenuState.value,
+                //optionMenuState = optionMenuState.value,
                 isSearchFieldVisible = searchState.value.isSearchFieldVisible,
                 onSearchIconClicked = {
                     viewModel.onEvent(NoteEvents.isVisibleSearchWidget(!searchState.value.isSearchFieldVisible))
@@ -56,8 +56,8 @@ fun NotesScreen(
                 onToggleClicked = {
                     viewModel.onEvent(NoteEvents.ToggleOrderSection)
                 },
-                onOptionClicked = {viewModel.onEvent(NoteEvents.DropDownMenu)},
-                optionDismiss = {viewModel.onEvent(NoteEvents.DropDownMenu)},
+                //onOptionClicked = {viewModel.onEvent(NoteEvents.DropDownMenu)},
+                //optionDismiss = {viewModel.onEvent(NoteEvents.DropDownMenu)},
                 onValueChange = {
                     viewModel.onEvent(NoteEvents.EnteredSearch(it))
                     viewModel.onEvent(
@@ -71,7 +71,7 @@ fun NotesScreen(
                     viewModel.onEvent(NoteEvents.isVisibleSearchWidget(!searchState.value.isSearchFieldVisible))
                 },
                 textStyle = MaterialTheme.typography.h5,
-                darkMode = darkMode
+                //darkMode = darkMode
             )
         },
 

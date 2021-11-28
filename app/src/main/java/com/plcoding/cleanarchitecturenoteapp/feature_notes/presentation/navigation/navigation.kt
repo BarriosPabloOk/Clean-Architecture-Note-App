@@ -22,7 +22,7 @@ import com.plcoding.cleanarchitecturenoteapp.feature_notes.presentation.util.Scr
 @Composable
 fun Navigation(
     navController: NavHostController,
-    darkMode : MutableState<Boolean>,
+    //darkMode : MutableState<Boolean>,
 
     ) {
     NavHost(
@@ -31,7 +31,8 @@ fun Navigation(
     ) {
         composable(Screen.NotesScreen.route){
             NotesScreen(navController = navController,
-            darkMode = darkMode)
+            //darkMode = darkMode
+            )
         }
         composable(
             route = Screen.AddEditScreen.route + "?noteId={noteId}&noteColor={noteColor}",

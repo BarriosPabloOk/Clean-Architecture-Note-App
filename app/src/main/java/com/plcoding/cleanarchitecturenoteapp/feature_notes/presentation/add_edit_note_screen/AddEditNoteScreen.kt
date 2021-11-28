@@ -68,9 +68,6 @@ fun AddEditNoteScreen(
     val (focusRequester) = FocusRequester.createRefs()
     val keyboardController = LocalSoftwareKeyboardController.current
 
-//    DisposableEffect(key1 = viewModel) {
-//        onDispose { viewModel.onEvent(AddNoteEvent.SaveNoteOnStop) }
-//    }
 
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { events ->
@@ -93,7 +90,16 @@ fun AddEditNoteScreen(
             AddEditTopBar(
                 favoriteState = isFavoriteState,
                 onFavoriteClicked = {viewModel.onEvent(AddNoteEvent.AddToFavorites(!isFavoriteState))},
-                onBackPressed = {viewModel.onEvent(AddNoteEvent.BackPressed(!alertState))}
+                onBackPressed = {
+                    if (
+                        noteContent.value.text.isNotBlank()
+                        || noteTitle.value.text.isNotBlank()) {
+                        viewModel.onEvent(AddNoteEvent.BackPressed(!alertState))
+                    }else{
+                        navController.navigateUp()
+                    }
+                },
+                color = backgroundAnimatable
             )
         },
         floatingActionButton = {
@@ -158,35 +164,37 @@ fun AddEditNoteScreen(
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))
-            Row(
+            AddEditTextFields(
+                text = noteTitle.value.text,
+                hint = noteTitle.value.hint,
+                onValueChange = {
+                    viewModel.onEvent(AddNoteEvent.EnteredTitle(it))
+                },
+                onFocusChange = {
+                    viewModel.onEvent(AddNoteEvent.ChangeFocusTitle(it))
+                },
+                isHintVisible = noteTitle.value.isHintVisible,
+                singleLine = true,
+                textStyle = MaterialTheme.typography.h5,
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    imeAction = ImeAction.Next,
+                    capitalization = KeyboardCapitalization.Sentences,
+                ),
+                keyboardActions = KeyboardActions(
+                    onNext = { focusRequester.requestFocus() }
+                ),
                 modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
+                    .focusRequester(focusRequester)
+                    .onKeyEvent {
+                        if (
+                            it.key == Key.Back &&
+                            it.type == KeyEventType.KeyUp) {
+                            viewModel.onEvent(AddNoteEvent.BackPressed(!alertState))
 
-                AddEditTextFields(
-                    text = noteTitle.value.text,
-                    hint = noteTitle.value.hint,
-                    onValueChange = {
-                        viewModel.onEvent(AddNoteEvent.EnteredTitle(it))
-                    },
-                    onFocusChange = {
-                        viewModel.onEvent(AddNoteEvent.ChangeFocusTitle(it))
-                    },
-                    isHintVisible = noteTitle.value.isHintVisible,
-                    singleLine = true,
-                    textStyle = MaterialTheme.typography.h5,
-                    keyboardOptions = KeyboardOptions.Default.copy(
-                        imeAction = ImeAction.Next,
-                        capitalization = KeyboardCapitalization.Sentences,
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onNext = { focusRequester.requestFocus() }
-                    ),
-                    modifier = Modifier.focusRequester(focusRequester)
-                )
-
-            }
+                        }
+                        true
+                    }
+            )
 
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -207,7 +215,9 @@ fun AddEditNoteScreen(
                 modifier = Modifier
                     .fillMaxHeight()
                     .onKeyEvent {
-                        if (it.key == Key.Back && it.type == KeyEventType.KeyUp) {
+                        if (
+                            it.key == Key.Back &&
+                            it.type == KeyEventType.KeyUp) {
                             viewModel.onEvent(AddNoteEvent.BackPressed(!alertState))
 
                         }

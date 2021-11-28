@@ -32,12 +32,12 @@ class MainActivity : ComponentActivity() {
 
 
         setContent {
-            val darkTheme = remember{ mutableStateOf(false)}
-            CleanArchitectureNoteAppTheme(darkTheme = darkTheme.value) {
+            //val darkTheme = remember{ mutableStateOf(false)}
+            CleanArchitectureNoteAppTheme {
                 ProvideWindowInsets(windowInsetsAnimationsEnabled = true) {
                     Navigation(
                         navController = rememberNavController(),
-                        darkMode = darkTheme
+                        //darkMode = darkTheme
                         )
                 }
             }

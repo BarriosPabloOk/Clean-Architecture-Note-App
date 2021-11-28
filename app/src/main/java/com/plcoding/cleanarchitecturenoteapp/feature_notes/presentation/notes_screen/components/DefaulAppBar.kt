@@ -20,10 +20,10 @@ import com.plcoding.cleanarchitecturenoteapp.ui.theme.GreenApp
 fun DefaultAppBar(
     onSearchIconClicked: () -> Unit,
     onToggleClicked: ()-> Unit,
-    onOptionClicked: () ->Unit,
-    optionMenuState :Boolean,
-    darkMode : MutableState<Boolean>,
-    optionDismiss:()->Unit
+    //onOptionClicked: () ->Unit,
+    //optionMenuState :Boolean,
+    //darkMode : MutableState<Boolean>,
+    //optionDismiss:()->Unit
 ) {
 
 
@@ -51,18 +51,20 @@ fun DefaultAppBar(
                     tint= MaterialTheme.colors.onPrimary
                 )
             }
-            IconButton(onClick = {onOptionClicked()}
-            ) {
-                Icon(imageVector = Icons.Default.MoreVert,
-                    contentDescription = "SearchIcon",
-                    tint= MaterialTheme.colors.onPrimary
-                )
-            }
-            OptionMenu(
-                expanded = optionMenuState,
-                onDismissRequest = {optionDismiss()},
-                darkMode = darkMode
-            )
+//            IconButton(onClick = {
+//                //onOptionClicked()
+//            }
+//            ) {
+//                Icon(imageVector = Icons.Default.MoreVert,
+//                    contentDescription = "SearchIcon",
+//                    tint= MaterialTheme.colors.onPrimary
+//                )
+//            }
+////            OptionMenu(
+////                expanded = optionMenuState,
+////                onDismissRequest = {optionDismiss()},
+////                darkMode = darkMode
+////            )
 
         },
         backgroundColor = MaterialTheme.colors.primary
