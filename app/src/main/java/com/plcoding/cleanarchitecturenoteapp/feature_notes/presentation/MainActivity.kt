@@ -5,6 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
@@ -30,12 +32,12 @@ class MainActivity : ComponentActivity() {
 
 
         setContent {
-
-            CleanArchitectureNoteAppTheme {
+            val darkTheme = remember{ mutableStateOf(false)}
+            CleanArchitectureNoteAppTheme(darkTheme = darkTheme.value) {
                 ProvideWindowInsets(windowInsetsAnimationsEnabled = true) {
                     Navigation(
                         navController = rememberNavController(),
-
+                        darkMode = darkTheme
                         )
                 }
             }

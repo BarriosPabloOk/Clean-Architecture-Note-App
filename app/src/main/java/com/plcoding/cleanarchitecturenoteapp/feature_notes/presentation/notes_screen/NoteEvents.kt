@@ -17,5 +17,6 @@ sealed class NoteEvents{
     object  RestoreNote : NoteEvents()
 
     object ToggleOrderSection: NoteEvents()
+    object DropDownMenu : NoteEvents()
 
 }

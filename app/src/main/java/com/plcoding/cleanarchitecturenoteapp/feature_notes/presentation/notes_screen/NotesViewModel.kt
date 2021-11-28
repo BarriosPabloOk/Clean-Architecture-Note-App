@@ -1,23 +1,15 @@
 package com.plcoding.cleanarchitecturenoteapp.feature_notes.presentation.notes_screen
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.datastore.dataStore
 import androidx.lifecycle.ViewModel
-
 import androidx.lifecycle.viewModelScope
-import com.plcoding.cleanarchitecturenoteapp.feature_notes.data.preferences.PreferenceManager
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.domain.model.Note
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.domain.use_cases.NoteUseCasesWrapper
-import com.plcoding.cleanarchitecturenoteapp.feature_notes.domain.util.DataStoreNoteOrder
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.domain.util.NoteOrder
-import com.plcoding.cleanarchitecturenoteapp.feature_notes.domain.util.OrderType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -26,12 +18,11 @@ import javax.inject.Inject
 @HiltViewModel
 class NotesViewModel @Inject constructor(
     private val noteUseCasesWrapper: NoteUseCasesWrapper,
-    private val preferenceManager: PreferenceManager,
 
 ): ViewModel() {
 
-    private val _state = mutableStateOf(NoteState())
-    val state : State<NoteState> = _state
+    private val _noteState = mutableStateOf(NoteState())
+    val noteState : State<NoteState> = _noteState
 
 
     private val _searchState = mutableStateOf<SearchTexFieldState>(
@@ -43,6 +34,10 @@ class NotesViewModel @Inject constructor(
     )
     val searchState : State<SearchTexFieldState> = _searchState
 
+
+    private val _dropDownMenuState = mutableStateOf<Boolean>(false)
+    val dropDownMenuState : State<Boolean> = _dropDownMenuState
+
     private var recentlyDeletedNote : Note? = null
 
     private var getNotesJob : Job? =null
@@ -52,7 +47,7 @@ class NotesViewModel @Inject constructor(
 
     init{
         viewModelScope.launch(Dispatchers.IO) {
-            noteUseCasesWrapper.readDataStoreUseCase(){
+            noteUseCasesWrapper.readDataStoreUseCase{
                 getNotes("", it)
             }
         }
@@ -62,8 +57,8 @@ class NotesViewModel @Inject constructor(
     fun onEvent(events: NoteEvents){
         when(events){
             is NoteEvents.Order -> {
-                if (state.value.order::class == events.order::class &&
-                        state.value.order.orderType == events.order.orderType){
+                if (noteState.value.order::class == events.order::class &&
+                        noteState.value.order.orderType == events.order.orderType){
                     return
                 }
                 getNotes(_searchState.value.text,events.order)
@@ -104,9 +99,12 @@ class NotesViewModel @Inject constructor(
 
 
             is NoteEvents.ToggleOrderSection -> {
-                _state.value = state.value.copy(
-                    isOrderSectionVisible = !state.value.isOrderSectionVisible
+                _noteState.value = noteState.value.copy(
+                    isOrderSectionVisible = !noteState.value.isOrderSectionVisible
                 )
+            }
+            is NoteEvents.DropDownMenu->{
+                _dropDownMenuState.value = !dropDownMenuState.value
             }
         }
     }
@@ -116,7 +114,7 @@ class NotesViewModel @Inject constructor(
         if (_searchState.value.text.isEmpty()){
             getNotesJob = noteUseCasesWrapper.getNotesUseCase(noteOrder)
                 .onEach { notes ->
-                    _state.value = state.value.copy(
+                    _noteState.value = noteState.value.copy(
                         noteList = notes,
                         order = noteOrder,
                     )
@@ -124,7 +122,7 @@ class NotesViewModel @Inject constructor(
         }else{
             getNotesJob = noteUseCasesWrapper.searchUseCase(string = string, noteOrder = noteOrder)
                 .onEach { notes ->
-                    _state.value = state.value.copy(
+                    _noteState.value = noteState.value.copy(
                         noteList = notes,
                         order = noteOrder,
                     )

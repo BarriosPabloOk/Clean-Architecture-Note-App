@@ -30,6 +30,7 @@ private val DarkColorPalette = darkColors(
     onSurface = LightGray
 )
 
+
 @Composable
 fun CleanArchitectureNoteAppTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable() () -> Unit) {
     MaterialTheme(

@@ -41,6 +41,7 @@ import com.google.accompanist.insets.navigationBarsWithImePadding
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.domain.model.Note
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.presentation.add_edit_note_screen.components.AddEditTextFields
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.presentation.add_edit_note_screen.components.AddEditAlertDialog
+import com.plcoding.cleanarchitecturenoteapp.feature_notes.presentation.add_edit_note_screen.components.AddEditTopBar
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -88,6 +89,13 @@ fun AddEditNoteScreen(
     }
 
     Scaffold(
+        topBar = {
+            AddEditTopBar(
+                favoriteState = isFavoriteState,
+                onFavoriteClicked = {viewModel.onEvent(AddNoteEvent.AddToFavorites(!isFavoriteState))},
+                onBackPressed = {viewModel.onEvent(AddNoteEvent.BackPressed(!alertState))}
+            )
+        },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
@@ -178,19 +186,6 @@ fun AddEditNoteScreen(
                     modifier = Modifier.focusRequester(focusRequester)
                 )
 
-
-
-                Icon(
-                    imageVector = if (isFavoriteState) Icons.Default.Star
-                    else Icons.Default.StarBorder,
-                    contentDescription = "add to favorites",
-                    modifier = Modifier
-                        .align(Alignment.CenterVertically)
-                        .clickable {
-                            viewModel.onEvent(AddNoteEvent.AddToFavorites(!isFavoriteState))
-                        },
-                    tint = Color.Black
-                )
             }
 
 

@@ -1,7 +1,7 @@
 package com.plcoding.cleanarchitecturenoteapp.feature_notes.presentation.notes_screen
 
-import android.util.Log
 import androidx.compose.animation.*
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,8 +13,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -27,13 +25,14 @@ import kotlinx.coroutines.launch
 @Composable
 fun NotesScreen(
     navController: NavController,
-    viewModel: NotesViewModel = hiltViewModel()
+    viewModel: NotesViewModel = hiltViewModel(),
+    darkMode : MutableState<Boolean>,
 ) {
-    val state = viewModel.state
+    val noteState = viewModel.noteState
     val searchState = viewModel.searchState
+    val optionMenuState = viewModel.dropDownMenuState
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
-
 
 
     Scaffold(
@@ -41,6 +40,7 @@ fun NotesScreen(
 
             MainTopBarController(
                 searchState = searchState,
+                optionMenuState = optionMenuState.value,
                 isSearchFieldVisible = searchState.value.isSearchFieldVisible,
                 onSearchIconClicked = {
                     viewModel.onEvent(NoteEvents.isVisibleSearchWidget(!searchState.value.isSearchFieldVisible))
@@ -49,26 +49,29 @@ fun NotesScreen(
                     viewModel.onEvent(
                         NoteEvents.Search(
                             string = searchState.value.text,
-                            order = state.value.order
+                            order = noteState.value.order
                         )
                     )
                 },
                 onToggleClicked = {
                     viewModel.onEvent(NoteEvents.ToggleOrderSection)
                 },
+                onOptionClicked = {viewModel.onEvent(NoteEvents.DropDownMenu)},
+                optionDismiss = {viewModel.onEvent(NoteEvents.DropDownMenu)},
                 onValueChange = {
                     viewModel.onEvent(NoteEvents.EnteredSearch(it))
                     viewModel.onEvent(
                         NoteEvents.Search(
                             string = searchState.value.text,
-                            order = state.value.order
+                            order = noteState.value.order
                         )
                     )
                 },
                 onCloseClicked = {
                     viewModel.onEvent(NoteEvents.isVisibleSearchWidget(!searchState.value.isSearchFieldVisible))
                 },
-                textStyle = MaterialTheme.typography.h5
+                textStyle = MaterialTheme.typography.h5,
+                darkMode = darkMode
             )
         },
 
@@ -91,7 +94,7 @@ fun NotesScreen(
                 .fillMaxSize()
         ) {
             AnimatedVisibility(
-                visible = state.value.isOrderSectionVisible,
+                visible = noteState.value.isOrderSectionVisible,
                 enter = fadeIn() + slideInVertically(),
                 exit = fadeOut() + slideOutVertically()
             ) {
@@ -99,7 +102,7 @@ fun NotesScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),
-                    noteOrder = state.value.order,
+                    noteOrder = noteState.value.order,
                     onChange = {
                         viewModel.onEvent(
                             NoteEvents.Order(it)
@@ -120,7 +123,7 @@ fun NotesScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 contentPadding = PaddingValues(16.dp)
             ) {
-                items(state.value.noteList) { note ->
+                items(noteState.value.noteList) { note ->
 
                     NoteItem(
                         note = note,
