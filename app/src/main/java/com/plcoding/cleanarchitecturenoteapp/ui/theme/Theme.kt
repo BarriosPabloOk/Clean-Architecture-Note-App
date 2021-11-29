@@ -32,7 +32,7 @@ private val DarkColorPalette = darkColors(
 
 
 @Composable
-fun CleanArchitectureNoteAppTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable() () -> Unit) {
+fun CleanArchitectureNoteAppTheme(darkTheme: Boolean = false, content: @Composable() () -> Unit) {
     MaterialTheme(
         colors = if (!darkTheme) LightColorPalette else DarkColorPalette ,
         typography = Typography,

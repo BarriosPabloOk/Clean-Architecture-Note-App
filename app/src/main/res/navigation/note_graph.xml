@@ -3,19 +3,20 @@
              xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/note_graph"
-    app:startDestination="@id/fragment_note">
+    app:startDestination="@id/noteFragment">
+
     <fragment
-        android:id="@+id/fragment_note"
-        android:name="com.plcoding.cleanarchitecturenoteapp.NoteFragment"
+        android:id="@+id/noteFragment"
+        android:name="com.plcoding.cleanarchitecturenoteapp.feature_notes.presentation.fragments.NoteFragment"
         android:label="fragment_note"
         tools:layout="@layout/fragment_note" >
         <action
-            android:id="@+id/action_fragment_note_to_addEditFragment"
+            android:id="@+id/action_noteFragment_to_addEditFragment"
             app:destination="@id/addEditFragment" />
     </fragment>
     <fragment
         android:id="@+id/addEditFragment"
-        android:name="com.plcoding.cleanarchitecturenoteapp.AddEditFragment"
+        android:name="com.plcoding.cleanarchitecturenoteapp.feature_notes.presentation.fragments.AddEditFragment"
         android:label="fragment_add_edit"
         tools:layout="@layout/fragment_add_edit" />
 </navigation>

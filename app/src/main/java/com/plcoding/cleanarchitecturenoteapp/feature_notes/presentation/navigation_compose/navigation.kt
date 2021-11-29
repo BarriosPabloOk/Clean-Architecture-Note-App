@@ -1,17 +1,14 @@
-package com.plcoding.cleanarchitecturenoteapp.feature_notes.presentation.navigation
+package com.plcoding.cleanarchitecturenoteapp.feature_notes.presentation.navigation_compose
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.presentation.add_edit_note_screen.AddEditNoteScreen
-import com.plcoding.cleanarchitecturenoteapp.feature_notes.presentation.add_edit_note_screen.AddEditViewModel
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.presentation.notes_screen.NotesScreen
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.presentation.splash_screen.SplashScreen
 import com.plcoding.cleanarchitecturenoteapp.feature_notes.presentation.util.Screen

@@ -5,8 +5,11 @@
         <item name="colorPrimary">@color/purple_200</item>
         <item name="colorPrimaryDark">@color/purple_700</item>
         <item name="colorAccent">@color/teal_200</item>
-        <item name="android:statusBarColor">@color/DarkGreenStatusBar</item>
-        <item name="android:windowBackground">@color/DarkGreenBackGround</item>
+        <!--<item name="android:statusBarColor">@color/DarkGreenStatusBar</item>-->
+        <!--<item name="android:windowBackground">@color/DarkGreenBackGround</item>-->
+
+        <item name="android:statusBarColor">@color/LightGreenStatusBar</item>
+        <item name="android:windowBackground">@color/LightGreenBackGround</item>
         <!-- Customize your theme here. -->
     </style>
 </resources>
